@@ -1,22 +1,34 @@
 const navigation = () => {
   return [
     {
-      title: 'Home',
-      path: '/home',
-      icon: 'mdi:home-outline',
+      title: 'Statistics Information',
+      path: '/statistics-information',
     },
     {
-      title: 'Second Page',
-      path: '/second-page',
-      icon: 'mdi:email-outline',
+      title: 'Sessions Management',
+      path: '/sessions-management',
     },
     {
-      path: '/acl',
-      action: 'read',
-      subject: 'acl-page',
-      title: 'Access Control',
-      icon: 'mdi:shield-outline',
-    }
+      title: 'Students Management',
+      path: '/students-management',
+    },
+    {
+      title: 'Teachers Management',
+      path: '/teachers-management',
+    },
+    {
+      title: 'Administrators',
+      path: '/administrators',
+    },
+    {
+      title: 'Update Information',
+      children: [
+        {
+          title: 'Courses Information',
+          path: '/update-information/courses'
+        },
+      ]
+    },
   ]
 }
 
