@@ -42,7 +42,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
   }
 }));
 
-function StudentTable({ students = [] }) {
+function TeacherTable({ teachers = [] }) {
   // ** State
   const [open, setOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState('Deactivation');
@@ -57,13 +57,13 @@ function StudentTable({ students = [] }) {
   const [openRemove, setOpenRemove] = useState(false);
 
   const [searchText, setSearchText] = useState('');
-  const [filteredData, setFilteredData] = useState(students);
+  const [filteredData, setFilteredData] = useState(teachers);
 
   const handleSearch = searchValue => {
     setSearchText(searchValue);
     const searchRegex = new RegExp(escapeRegExp(searchValue), 'i');
 
-    const filteredRows = students.filter(row => {
+    const filteredRows = teachers.filter(row => {
       return Object.keys(row).some(field => {
         return searchRegex.test(row[field].toString());
       });
@@ -71,7 +71,7 @@ function StudentTable({ students = [] }) {
     if (searchValue.length) {
       setFilteredData(filteredRows);
     } else {
-      setFilteredData(students);
+      setFilteredData(teachers);
     }
   };
 
@@ -88,13 +88,13 @@ function StudentTable({ students = [] }) {
 
   const columns = [
     {
-      flex: 0.1,
+      flex: 0.05,
       minWidth: 10,
-      field: 'studentId',
+      field: 'teacherId',
       headerName: 'ID',
       renderCell: ({ row }) => (
         <Typography variant='body1' noWrap>
-          {row.studentId}
+          {row.teacherId}
         </Typography>
       )
     },
@@ -112,7 +112,7 @@ function StudentTable({ students = [] }) {
       )
     },
     {
-      flex: 0.1,
+      flex: 0.15,
       minWidth: 50,
       field: 'phoneNumber',
       headerName: 'Phone Number',
@@ -126,43 +126,56 @@ function StudentTable({ students = [] }) {
     },
     {
       flex: 0.1,
-      minWidth: 150,
-      field: 'order',
-      headerName: 'Order',
+      minWidth: 100,
+      field: 'courseName',
+      headerName: 'Course',
       renderCell: ({ row }) => (
-        <Tooltip title={row.order}>
+        <Tooltip title={row.courseName}>
           <Typography variant='body1' noWrap>
-            {row.order}
+            {row.courseName}
           </Typography>
         </Tooltip>
       )
     },
     {
       flex: 0.1,
-      field: 'session',
+      field: 'teachingYears',
       minWidth: 150,
-      headerName: 'Session',
+      headerName: 'Teaching Years',
       renderCell: ({ row }) => (
-        <Tooltip title={row.session}>
+        <Tooltip title={row.teachingYears}>
           <Typography variant='body1' noWrap>
-            {row.session}
+            {row.teachingYears}
           </Typography>
         </Tooltip>
       )
     },
     {
       flex: 0.1,
-      field: 'amount',
+      field: 'status',
       minWidth: 150,
-      headerName: 'Amount',
+      headerName: 'Status',
       renderCell: ({ row }) => (
-        <Tooltip title={row.amount}>
+        <Tooltip title={row.status}>
           <Typography variant='body1' noWrap>
-            {row.amount}
+            {row.status}
           </Typography>
         </Tooltip>
       )
     },
+    {
+        flex: 0.1,
+        field: 'evaluation',
+        minWidth: 100,
+        headerName: 'Evaluation',
+        renderCell: ({ row }) => (
+          <Tooltip title={row.evaluation}>
+            <Typography variant='body1' noWrap>
+              {row.evaluation}
+            </Typography>
+          </Tooltip>
+        )
+      },
     {
       flex: 0.1,
       minWidth: 10,
@@ -176,7 +189,7 @@ function StudentTable({ students = [] }) {
     },
     {
       flex: 0.1,
-      minWidth: 100,
+      minWidth: 150,
       sortable: false,
       field: 'action',
       headerName: 'Action',
@@ -194,7 +207,7 @@ function StudentTable({ students = [] }) {
                 setDialogWord(row.active ? 'Deactivate' : 'Reactivate');
                 setDialogWordLower(row.active ? 'deactivate' : 'reactivate');
                 setDialogColor(row.active ? '#c96363' : '#50d2be');
-                setSelectedActivationID(row.studentId);
+                setSelectedActivationID(row.teacherId);
                 setSelectedActivationStatus(row.active);
               }}
             >
@@ -210,7 +223,7 @@ function StudentTable({ students = [] }) {
       <Grid container spacing={6}>
         <Grid item xs={6}>
           <Typography variant='h5' style={{ paddingTop: '3%' }}>
-            Student List
+            Teacher List
           </Typography>
         </Grid>
         <Grid item xs={6}>
@@ -224,7 +237,7 @@ function StudentTable({ students = [] }) {
                 handleClickOpenRemove();
               }}
             >
-              - Remove Selected Students
+              - Remove Selected Teachers
             </StyledButton>
           </Box>
         </Grid>
@@ -234,7 +247,7 @@ function StudentTable({ students = [] }) {
               autoHeight
               rows={filteredData}
               columns={columns}
-              getRowId={row => row.studentId}
+              getRowId={row => row.teacherId}
               checkboxSelection
               disableVirtualization
               disableRowSelectionOnClick
@@ -278,7 +291,7 @@ function StudentTable({ students = [] }) {
           }}
         >
           <Typography align='center' variant='body1' color={dialogColor}>
-            Are you sure you would like to {dialogWordLower} this student?
+            Are you sure you would like to {dialogWordLower} this teacher?
           </Typography>
         </DialogContent>
         <DialogActions
@@ -328,7 +341,7 @@ function StudentTable({ students = [] }) {
           }}
         >
           <Typography align='center' variant='body1' color='#c96363'>
-            Are you sure you would like to remove the selected student(s)?
+            Are you sure you would like to remove the selected teacher(s)?
             <br></br>This action cannot be undone.
           </Typography>
         </DialogContent>
@@ -365,4 +378,4 @@ function StudentTable({ students = [] }) {
   );
 }
 
-export default StudentTable;
+export default TeacherTable;

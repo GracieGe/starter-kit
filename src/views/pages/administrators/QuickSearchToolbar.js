@@ -24,7 +24,7 @@ const QuickSearchToolbar = props => {
         size='small'
         value={props.value}
         onChange={props.onChange}
-        placeholder='Search Admins'
+        placeholder='Search'
         InputProps={{
           startAdornment: (
             <Box sx={{ mr: 2, display: 'flex' }}>

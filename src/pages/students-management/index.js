@@ -14,7 +14,7 @@ import Icon from 'src/@core/components/icon'
 import StudentTable from 'src/views/pages/students-management/StudentTable'
 
 function StudentsManagement() {
-  const adminList = [];  
+  const studentList = [];  
 
   return (
     <>
@@ -27,7 +27,7 @@ function StudentsManagement() {
       <Box sx={{ p: 5 }}></Box>
       <Grid container spacing={6}>
         <Grid item xs={12}>
-          <StudentTable admins={adminList} />
+          <StudentTable students={studentList} />
         </Grid>
       </Grid>
     </>
