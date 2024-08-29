@@ -13,9 +13,10 @@ import Icon from 'src/@core/components/icon'
 // ** Demo Components Imports
 import AdminTable from 'src/views/pages/administrators/AdminTable'
 
-function Administrators() {
-  const adminList = [];  
+// Database
+import pool from 'src/lib/db';
 
+function Administrators({ admins }) {
   return (
     <>
       <Typography variant='p'>
@@ -27,11 +28,29 @@ function Administrators() {
       <Box sx={{ p: 5 }}></Box>
       <Grid container spacing={6}>
         <Grid item xs={12}>
-          <AdminTable admins={adminList} />
+          <AdminTable admins={admins} />
         </Grid>
       </Grid>
     </>
-  )
+  );
 }
 
-export default Administrators
+export default Administrators;
+
+export async function getServerSideProps() {
+  let admins = [];
+
+  try {
+    // 从数据库查询所需的字段
+    const res = await pool.query('SELECT "adminId", "fullName", "phoneNumber", "email", "role", "active" FROM "Admins"');
+    admins = res.rows; // 从查询结果中获取所有行
+  } catch (err) {
+    console.error('Error fetching admins from database:', err);
+  }
+
+  return {
+    props: {
+      admins, // 将管理员数据传递给页面组件
+    },
+  };
+}
