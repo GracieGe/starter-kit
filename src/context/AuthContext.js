@@ -71,7 +71,7 @@ const AuthProvider = ({ children }) => {
         const returnUrl = router.query.returnUrl
         setUser({ ...response.data.userData })
         params.rememberMe ? window.localStorage.setItem('userData', JSON.stringify(response.data.userData)) : null
-        const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/'
+        const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/statistics-information'
         router.replace(redirectURL)
       })
       .catch(err => {

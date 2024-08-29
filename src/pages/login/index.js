@@ -3,6 +3,7 @@ import { useState } from 'react'
 
 // ** Next Imports
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 // ** MUI Components
 import Alert from '@mui/material/Alert'
@@ -115,6 +116,7 @@ const LoginPage = () => {
   const bgColors = useBgColor()
   const { settings } = useSettings()
   const hidden = useMediaQuery(theme.breakpoints.down('md'))
+  const router = useRouter()
 
   // ** Vars
   const { skin } = settings
@@ -137,6 +139,9 @@ const LoginPage = () => {
         type: 'manual',
         message: 'Email or Password is invalid'
       })
+    }, () => {
+      console.log("Login successful, redirecting to /statistics-information")
+      router.push('/statistics-information') 
     })
   }
   const imageSource = skin === 'bordered' ? 'auth-v2-login-illustration-bordered' : 'auth-v2-login-illustration'

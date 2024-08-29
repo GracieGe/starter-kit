@@ -1,21 +1,35 @@
-const navigation = () => [
-  {
-    title: 'Home',
-    path: '/home',
-    icon: 'mdi:home-outline',
-  },
-  {
-    title: 'Second Page',
-    path: '/second-page',
-    icon: 'mdi:email-outline',
-  },
-  {
-    path: '/acl',
-    action: 'read',
-    subject: 'acl-page',
-    title: 'Access Control',
-    icon: 'mdi:shield-outline',
-  }
-]
+const navigation = () => {
+  return [
+    {
+      title: 'Statistics Information',
+      path: '/statistics-information',
+    },
+    {
+      title: 'Sessions Management',
+      path: '/sessions-management',
+    },
+    {
+      title: 'Students Management',
+      path: '/students-management',
+    },
+    {
+      title: 'Teachers Management',
+      path: '/teachers-management',
+    },
+    {
+      title: 'Administrators',
+      path: '/administrators',
+    },
+    {
+      title: 'Update Information',
+      children: [
+        {
+          title: 'Courses Information',
+          path: '/update-information/courses'
+        },
+      ]
+    },
+  ]
+}
 
 export default navigation
