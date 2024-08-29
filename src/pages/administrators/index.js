@@ -41,16 +41,15 @@ export async function getServerSideProps() {
   let admins = [];
 
   try {
-    // 从数据库查询所需的字段
     const res = await pool.query('SELECT "adminId", "fullName", "phoneNumber", "email", "role", "active" FROM "Admins"');
-    admins = res.rows; // 从查询结果中获取所有行
+    admins = res.rows;
   } catch (err) {
     console.error('Error fetching admins from database:', err);
   }
 
   return {
     props: {
-      admins, // 将管理员数据传递给页面组件
+      admins,
     },
   };
 }
