@@ -43,6 +43,9 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 function AdminTable({ admins = [] }) {
+  // sort admins
+  const sortedAdmins = [...admins].sort((a, b) => a.adminId - b.adminId)
+
   // ** State
   const [open, setOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState('Deactivation');
@@ -57,7 +60,7 @@ function AdminTable({ admins = [] }) {
   const [openRemove, setOpenRemove] = useState(false);
 
   const [searchText, setSearchText] = useState('');
-  const [filteredData, setFilteredData] = useState(admins);
+  const [filteredData, setFilteredData] = useState(sortedAdmins);
 
   const handleSearch = searchValue => {
     setSearchText(searchValue);
@@ -65,13 +68,15 @@ function AdminTable({ admins = [] }) {
 
     const filteredRows = admins.filter(row => {
       return Object.keys(row).some(field => {
-        return searchRegex.test(row[field].toString());
+        const value = row[field];
+        
+        return value !== null && value !== undefined && searchRegex.test(value.toString());
       });
     });
     if (searchValue.length) {
-      setFilteredData(filteredRows);
+      setFilteredData([...filteredRows].sort((a, b) => a.adminId - b.adminId))
     } else {
-      setFilteredData(admins);
+      setFilteredData([...sortedAdmins])
     }
   };
 
