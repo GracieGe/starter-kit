@@ -43,6 +43,9 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 function TeacherTable({ teachers = [] }) {
+  // sort teachers
+  const sortedTeachers = [...teachers].sort((a, b) => a.teacherId - b.teacherId)
+
   // ** State
   const [open, setOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState('Deactivation');
@@ -57,7 +60,7 @@ function TeacherTable({ teachers = [] }) {
   const [openRemove, setOpenRemove] = useState(false);
 
   const [searchText, setSearchText] = useState('');
-  const [filteredData, setFilteredData] = useState(teachers);
+  const [filteredData, setFilteredData] = useState(sortedTeachers);
 
   const handleSearch = searchValue => {
     setSearchText(searchValue);
@@ -65,13 +68,15 @@ function TeacherTable({ teachers = [] }) {
 
     const filteredRows = teachers.filter(row => {
       return Object.keys(row).some(field => {
-        return searchRegex.test(row[field].toString());
+        const value = row[field];
+        
+        return value !== null && value !== undefined && searchRegex.test(value.toString());
       });
     });
     if (searchValue.length) {
-      setFilteredData(filteredRows);
+      setFilteredData([...filteredRows].sort((a, b) => a.teacherId - b.teacherId))
     } else {
-      setFilteredData(teachers);
+      setFilteredData([...sortedTeachers])
     }
   };
 
@@ -88,7 +93,7 @@ function TeacherTable({ teachers = [] }) {
 
   const columns = [
     {
-      flex: 0.05,
+      flex: 0.07,
       minWidth: 10,
       field: 'teacherId',
       headerName: 'ID',
@@ -112,7 +117,7 @@ function TeacherTable({ teachers = [] }) {
       )
     },
     {
-      flex: 0.15,
+      flex: 0.13,
       minWidth: 50,
       field: 'phoneNumber',
       headerName: 'Phone Number',
@@ -165,13 +170,13 @@ function TeacherTable({ teachers = [] }) {
     },
     {
         flex: 0.1,
-        field: 'evaluation',
+        field: 'rating',
         minWidth: 100,
         headerName: 'Evaluation',
         renderCell: ({ row }) => (
-          <Tooltip title={row.evaluation}>
+          <Tooltip title={row.rating}>
             <Typography variant='body1' noWrap>
-              {row.evaluation}
+              {row.rating}
             </Typography>
           </Tooltip>
         )
