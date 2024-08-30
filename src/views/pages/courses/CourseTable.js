@@ -179,17 +179,6 @@ function CourseTable({ courses = [] }) {
             >
               + Create New Course
             </Button>
-            <StyledButton
-              size='large'
-              disabled={rowsSelected.length === 0}
-              variant='contained'
-              onClick={e => {
-                e.preventDefault();
-                handleClickOpenRemove();
-              }}
-            >
-              - Remove Selected Courses
-            </StyledButton>
           </Box>
         </Grid>
         <Grid item xs={12}>
