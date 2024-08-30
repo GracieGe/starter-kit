@@ -66,8 +66,6 @@ export async function getServerSideProps() {
         "Courses" C ON T."courseId" = C."courseId"
     `);
     sessions = res.rows
-
-    console.log('Sessions:', sessions);
   } catch (err) {
     console.error('Error fetching sessions from database:', err);
   }

@@ -134,7 +134,7 @@ function CourseTable({ courses = [] }) {
       flex: 0.1,
       field: 'price',
       minWidth: 150,
-      headerName: 'Amount per Hour',
+      headerName: 'Price per Hour',
       renderCell: ({ row }) => (
         <Tooltip title={row.price}>
           <Typography variant='body1' noWrap>
@@ -175,7 +175,7 @@ function CourseTable({ courses = [] }) {
               size='large'
               variant='contained'
               style={{ backgroundColor: '#326eff', borderColor: '#326eff', opacity: 1 }}
-              href='/administrators/create'
+              href='/update-information/courses/create'
             >
               + Create New Course
             </Button>
