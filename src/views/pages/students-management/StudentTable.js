@@ -43,6 +43,9 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 function StudentTable({ students = [] }) {
+  // sort students
+  const sortedStudents = [...students].sort((a, b) => a.studentId - b.studentId)
+
   // ** State
   const [open, setOpen] = useState(false);
   const [dialogTitle, setDialogTitle] = useState('Deactivation');
@@ -57,7 +60,7 @@ function StudentTable({ students = [] }) {
   const [openRemove, setOpenRemove] = useState(false);
 
   const [searchText, setSearchText] = useState('');
-  const [filteredData, setFilteredData] = useState(students);
+  const [filteredData, setFilteredData] = useState(sortedStudents);
 
   const handleSearch = searchValue => {
     setSearchText(searchValue);
@@ -65,13 +68,15 @@ function StudentTable({ students = [] }) {
 
     const filteredRows = students.filter(row => {
       return Object.keys(row).some(field => {
-        return searchRegex.test(row[field].toString());
+        const value = row[field];
+        
+        return value !== null && value !== undefined && searchRegex.test(value.toString());
       });
     });
     if (searchValue.length) {
-      setFilteredData(filteredRows);
+      setFilteredData([...filteredRows].sort((a, b) => a.studentId - b.studentId))
     } else {
-      setFilteredData(students);
+      setFilteredData([...sortedStudents])
     }
   };
 
@@ -139,13 +144,13 @@ function StudentTable({ students = [] }) {
     },
     {
       flex: 0.1,
-      field: 'amount',
+      field: 'totalAmount',
       minWidth: 150,
-      headerName: 'Amount',
+      headerName: 'Paid Amount',
       renderCell: ({ row }) => (
-        <Tooltip title={row.amount}>
+        <Tooltip title={row.totalAmount}>
           <Typography variant='body1' noWrap>
-            {row.amount}
+            {row.totalAmount}
           </Typography>
         </Tooltip>
       )
