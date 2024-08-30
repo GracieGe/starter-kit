@@ -17,6 +17,8 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import { DataGrid } from '@mui/x-data-grid';
+import IconButton from '@mui/material/IconButton'
+import EditIcon from '@mui/icons-material/Edit'
 
 // ** Custom Components Imports
 import QuickSearchToolbar from 'src/views/pages/administrators/QuickSearchToolbar';
@@ -42,28 +44,20 @@ const StyledButton = styled(Button)(({ theme }) => ({
   }
 }));
 
-function StudentTable({ students = [] }) {
+function CourseTable({ courses = [] }) {
   // ** State
-  const [open, setOpen] = useState(false);
-  const [dialogTitle, setDialogTitle] = useState('Deactivation');
-  const [dialogWord, setDialogWord] = useState('Deactivate');
-  const [dialogWordLower, setDialogWordLower] = useState('deactivate');
-  const [dialogColor, setDialogColor] = useState('');
-  const [selectedActivationID, setSelectedActivationID] = useState(1);
-  const [selectedActivationStatus, setSelectedActivationStatus] = useState(true);
-
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
   const [rowsSelected, setRowsSelected] = useState([]);
   const [openRemove, setOpenRemove] = useState(false);
 
   const [searchText, setSearchText] = useState('');
-  const [filteredData, setFilteredData] = useState(students);
+  const [filteredData, setFilteredData] = useState(courses);
 
   const handleSearch = searchValue => {
     setSearchText(searchValue);
     const searchRegex = new RegExp(escapeRegExp(searchValue), 'i');
 
-    const filteredRows = students.filter(row => {
+    const filteredRows = courses.filter(row => {
       return Object.keys(row).some(field => {
         return searchRegex.test(row[field].toString());
       });
@@ -71,16 +65,11 @@ function StudentTable({ students = [] }) {
     if (searchValue.length) {
       setFilteredData(filteredRows);
     } else {
-      setFilteredData(students);
+      setFilteredData(courses);
     }
   };
 
-  const handleClickOpen = () => setOpen(true);
   const handleClickOpenRemove = () => setOpenRemove(true);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleCloseRemove = () => {
     setOpenRemove(false);
@@ -88,25 +77,25 @@ function StudentTable({ students = [] }) {
 
   const columns = [
     {
-      flex: 0.08,
+      flex: 0.1,
       minWidth: 10,
-      field: 'studentId',
+      field: 'courseId',
       headerName: 'ID',
       renderCell: ({ row }) => (
         <Typography variant='body1' noWrap>
-          {row.studentId}
+          {row.courseId}
         </Typography>
       )
     },
     {
       flex: 0.1,
       minWidth: 50,
-      field: 'fullName',
-      headerName: 'Fullname',
+      field: 'courseName',
+      headerName: 'Course Name',
       renderCell: ({ row }) => (
-        <Tooltip title={row.fullName}>
+        <Tooltip title={row.courseName}>
           <Typography variant='body1' noWrap>
-            {row.fullName}
+            {row.courseName}
           </Typography>
         </Tooltip>
       )
@@ -114,20 +103,7 @@ function StudentTable({ students = [] }) {
     {
       flex: 0.1,
       minWidth: 50,
-      field: 'phoneNumber',
-      headerName: 'Phone Number',
-      renderCell: ({ row }) => (
-        <Tooltip title={row.phoneNumber}>
-          <Typography variant='body1' noWrap>
-            {row.phoneNumber}
-          </Typography>
-        </Tooltip>
-      )
-    },
-    {
-      flex: 0.1,
       field: 'grade',
-      minWidth: 150,
       headerName: 'Grade',
       renderCell: ({ row }) => (
         <Tooltip title={row.grade}>
@@ -139,56 +115,45 @@ function StudentTable({ students = [] }) {
     },
     {
       flex: 0.1,
-      field: 'amount',
-      minWidth: 150,
-      headerName: 'Amount',
+      minWidth: 250,
+      field: 'description',
+      headerName: 'Description',
       renderCell: ({ row }) => (
-        <Tooltip title={row.amount}>
+        <Tooltip title={row.description}>
           <Typography variant='body1' noWrap>
-            {row.amount}
+            {row.description}
           </Typography>
         </Tooltip>
       )
     },
     {
       flex: 0.1,
-      minWidth: 10,
-      field: 'active',
-      headerName: 'Active',
+      field: 'price',
+      minWidth: 150,
+      headerName: 'Amount per Hour',
       renderCell: ({ row }) => (
-        <Typography variant='body1' noWrap>
-          {row.active ? 'Y' : 'N'}
-        </Typography>
+        <Tooltip title={row.price}>
+          <Typography variant='body1' noWrap>
+            {row.price}
+          </Typography>
+        </Tooltip>
       )
     },
     {
-      flex: 0.1,
-      minWidth: 100,
+      flex: 0.08,
+      minWidth: 80,
       sortable: false,
       field: 'action',
       headerName: 'Action',
-      renderCell: ({ row }) => {
-          return (
-            <Typography
-              href='/'
-              variant='body2'
-              component={Link}
-              sx={{ color: 'primary.main', textDecoration: 'none' }}
-              onClick={e => {
-                e.preventDefault();
-                handleClickOpen();
-                setDialogTitle(row.active ? 'Deactivation' : 'Reactivation');
-                setDialogWord(row.active ? 'Deactivate' : 'Reactivate');
-                setDialogWordLower(row.active ? 'deactivate' : 'reactivate');
-                setDialogColor(row.active ? '#c96363' : '#50d2be');
-                setSelectedActivationID(row.studentId);
-                setSelectedActivationStatus(row.active);
-              }}
-            >
-              {row.active ? 'Deactivate' : 'Reactivate'}
-            </Typography>
-          );
-      }
+      renderCell: ({ row }) => (
+        <Tooltip title="Edit">
+        <Link>
+          <IconButton>
+            <EditIcon />
+          </IconButton>
+        </Link>
+        </Tooltip>
+      )
     }
   ];
 
@@ -197,11 +162,19 @@ function StudentTable({ students = [] }) {
       <Grid container spacing={6}>
         <Grid item xs={6}>
           <Typography variant='h5' style={{ paddingTop: '3%' }}>
-            Student List
+            Course List
           </Typography>
         </Grid>
         <Grid item xs={6}>
           <Box className='demo-space-x' display='flex' justifyContent='flex-end'>
+            <Button
+              size='large'
+              variant='contained'
+              style={{ backgroundColor: '#326eff', borderColor: '#326eff', opacity: 1 }}
+              href='/administrators/create'
+            >
+              + Create New Course
+            </Button>
             <StyledButton
               size='large'
               disabled={rowsSelected.length === 0}
@@ -211,7 +184,7 @@ function StudentTable({ students = [] }) {
                 handleClickOpenRemove();
               }}
             >
-              - Remove Selected Students
+              - Remove Selected Courses
             </StyledButton>
           </Box>
         </Grid>
@@ -221,7 +194,7 @@ function StudentTable({ students = [] }) {
               autoHeight
               rows={filteredData}
               columns={columns}
-              getRowId={row => row.studentId}
+              getRowId={row => row.courseId}
               checkboxSelection
               disableVirtualization
               disableRowSelectionOnClick
@@ -246,56 +219,6 @@ function StudentTable({ students = [] }) {
           </Card>
         </Grid>
       </Grid>
-      <Dialog maxWidth='md' scroll='body' onClose={handleClose} open={open}>
-        <DialogTitle
-          sx={{
-            textAlign: 'center',
-            px: theme => [`${theme.spacing(5)} !important`, `${theme.spacing(15)} !important`],
-            pt: theme => [`${theme.spacing(8)} !important`, `${theme.spacing(12.5)} !important`]
-          }}
-        >
-          <Typography variant='h5' component='span'>
-            {`Confirm ${dialogTitle}`}
-          </Typography>
-        </DialogTitle>
-        <DialogContent
-          sx={{
-            pb: theme => `${theme.spacing(5)} !important`,
-            px: theme => [`${theme.spacing(5)} !important`, `${theme.spacing(15)} !important`]
-          }}
-        >
-          <Typography align='center' variant='body1' color={dialogColor}>
-            Are you sure you would like to {dialogWordLower} this student?
-          </Typography>
-        </DialogContent>
-        <DialogActions
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            px: theme => [`${theme.spacing(5)} !important`, `${theme.spacing(15)} !important`],
-            pb: theme => [`${theme.spacing(8)} !important`, `${theme.spacing(12.5)} !important`]
-          }}
-        >
-          <Box className='demo-space-x'>
-            <Button
-              size='large'
-              variant='outlined'
-              style={{ backgroundColor: '#3c3c3c', borderColor: '#3c3c3c', opacity: 0.4 }}
-              onClick={handleClose}
-            >
-              <Typography style={{ color: '#ffffff' }}>Cancel</Typography>
-            </Button>
-            <Button
-              size='large'
-              style={{ backgroundColor: dialogColor, borderColor: dialogColor, opacity: 1 }}
-              variant='contained'
-              onClick={handleClose}
-            >
-              Yes, {dialogWord}
-            </Button>
-          </Box>
-        </DialogActions>
-      </Dialog>
       <Dialog maxWidth='md' scroll='body' onClose={handleCloseRemove} open={openRemove}>
         <DialogTitle
           sx={{
@@ -315,7 +238,7 @@ function StudentTable({ students = [] }) {
           }}
         >
           <Typography align='center' variant='body1' color='#c96363'>
-            Are you sure you would like to remove the selected student(s)?
+            Are you sure you would like to remove the selected course(s)?
             <br></br>This action cannot be undone.
           </Typography>
         </DialogContent>
@@ -352,4 +275,4 @@ function StudentTable({ students = [] }) {
   );
 }
 
-export default StudentTable;
+export default CourseTable;

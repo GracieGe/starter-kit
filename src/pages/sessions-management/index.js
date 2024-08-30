@@ -19,7 +19,7 @@ function SessionsManagement() {
   return (
     <>
       <Typography variant='p'>
-        <IconButton href='/dashboards/allboroughs'>
+        <IconButton>
           <Icon icon='mdi:home-outline' />
         </IconButton>
         / <Link href='/sessions-management'>Session List</Link>
