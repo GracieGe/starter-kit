@@ -1,5 +1,6 @@
 // ** React Imports
 import { useState } from 'react';
+import Router from 'next/router';
 
 // ** Next Import
 import Link from 'next/link';
@@ -20,6 +21,12 @@ import { DataGrid } from '@mui/x-data-grid';
 
 // ** Custom Components Imports
 import QuickSearchToolbar from 'src/views/pages/administrators/QuickSearchToolbar';
+
+// ** Vars
+const adminDialog = {
+  true: { letter: 'Y', verb: 'Deactivate', noun: 'Deactivation', verbLower: 'deactivate', color: '#c96363' },
+  false: { letter: 'N', verb: 'Reactivate', noun: 'Reactivation', verbLower: 'reactivate', color: '#50d2be' }
+}
 
 // ** Utils Import
 const escapeRegExp = value => {
@@ -90,6 +97,28 @@ function AdminTable({ admins = [] }) {
   const handleCloseRemove = () => {
     setOpenRemove(false);
   };
+
+  const handleSubmitDelete = async () => {
+    const ids = rowsSelected
+
+    // send request to server to delete admins
+    try {
+      const body = { ids }
+
+      await fetch('/api/deleteAdmins', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      })
+
+      handleCloseRemove()
+    } catch (error) {
+      console.error(error)
+    }
+
+    setFilteredData(filteredData.filter(element => !ids.includes(element.adminId)))
+    await Router.push('/administrators')
+  }
 
   const columns = [
     {
@@ -354,7 +383,7 @@ function AdminTable({ admins = [] }) {
               type='submit'
               variant='contained'
               style={{ backgroundColor: '#c96363', borderColor: '#c96363', opacity: 1 }}
-              onClick={handleCloseRemove}
+              onClick={handleSubmitDelete}
             >
               Yes, Remove
             </Button>
