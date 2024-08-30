@@ -45,13 +45,15 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 function CourseTable({ courses = [] }) {
+  // sort courses
+  const sortedCourses = [...courses].sort((a, b) => a.courseId - b.courseId)
+
   // ** State
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
   const [rowsSelected, setRowsSelected] = useState([]);
   const [openRemove, setOpenRemove] = useState(false);
-
   const [searchText, setSearchText] = useState('');
-  const [filteredData, setFilteredData] = useState(courses);
+  const [filteredData, setFilteredData] = useState(sortedCourses); 
 
   const handleSearch = searchValue => {
     setSearchText(searchValue);
@@ -59,13 +61,15 @@ function CourseTable({ courses = [] }) {
 
     const filteredRows = courses.filter(row => {
       return Object.keys(row).some(field => {
-        return searchRegex.test(row[field].toString());
+        const value = row[field];
+        
+        return value !== null && value !== undefined && searchRegex.test(value.toString());
       });
     });
     if (searchValue.length) {
-      setFilteredData(filteredRows);
+      setFilteredData([...filteredRows].sort((a, b) => a.courseId - b.courseId))
     } else {
-      setFilteredData(courses);
+      setFilteredData([...sortedCourses])
     }
   };
 
@@ -147,7 +151,7 @@ function CourseTable({ courses = [] }) {
       headerName: 'Action',
       renderCell: ({ row }) => (
         <Tooltip title="Edit">
-        <Link>
+        <Link href="#">
           <IconButton>
             <EditIcon />
           </IconButton>

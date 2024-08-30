@@ -13,9 +13,10 @@ import Icon from 'src/@core/components/icon'
 // ** Demo Components Imports
 import CourseTable from 'src/views/pages/courses/CourseTable'
 
-function CoursesManagement() {
-  const courseList = [];  
+// Database
+import pool from 'src/lib/db';
 
+function Courses({ courses }) {
   return (
     <>
       <Typography variant='p'>
@@ -27,11 +28,28 @@ function CoursesManagement() {
       <Box sx={{ p: 5 }}></Box>
       <Grid container spacing={6}>
         <Grid item xs={12}>
-          <CourseTable courses={courseList} />
+          <CourseTable courses={courses} />
         </Grid>
       </Grid>
     </>
   )
 }
 
-export default CoursesManagement
+export default Courses
+
+export async function getServerSideProps() {
+  let courses = [];
+
+  try {
+    const res = await pool.query('SELECT "courseId", "courseName", "grade", "description", "price" FROM "Courses"');
+    courses = res.rows;
+  } catch (err) {
+    console.error('Error fetching courses from database:', err);
+  }
+
+  return {
+    props: {
+      courses,
+    },
+  };
+}
