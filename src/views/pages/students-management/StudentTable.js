@@ -205,21 +205,6 @@ function StudentTable({ students = [] }) {
             Student List
           </Typography>
         </Grid>
-        <Grid item xs={6}>
-          <Box className='demo-space-x' display='flex' justifyContent='flex-end'>
-            <StyledButton
-              size='large'
-              disabled={rowsSelected.length === 0}
-              variant='contained'
-              onClick={e => {
-                e.preventDefault();
-                handleClickOpenRemove();
-              }}
-            >
-              - Remove Selected Students
-            </StyledButton>
-          </Box>
-        </Grid>
         <Grid item xs={12}>
           <Card>
             <DataGrid
