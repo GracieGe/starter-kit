@@ -98,6 +98,34 @@ function AdminTable({ admins = [] }) {
     setOpenRemove(false);
   };
 
+  const handleSubmitActivation = async () => {
+    const id = selectedActivationID;
+    const newStatus = !selectedActivationStatus;
+  
+    try {
+      const body = { id, newStatus };
+  
+      const response = await fetch('/api/adminActivation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+  
+      if (response.ok) {
+        setFilteredData(
+          filteredData.map(admin =>
+            admin.adminId === id ? { ...admin, active: newStatus } : admin
+          )
+        );
+        handleClose();
+      } else {
+        console.error('Failed to update admin status');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleSubmitDelete = async () => {
     const ids = rowsSelected
 
@@ -191,7 +219,7 @@ function AdminTable({ admins = [] }) {
       headerName: 'Active',
       renderCell: ({ row }) => (
         <Typography variant='body1' noWrap>
-          {row.active ? 'Y' : 'N'}
+          {adminDialog[row.active].letter}
         </Typography>
       )
     },
@@ -211,15 +239,15 @@ function AdminTable({ admins = [] }) {
               onClick={e => {
                 e.preventDefault();
                 handleClickOpen();
-                setDialogTitle(row.active ? 'Deactivation' : 'Reactivation');
-                setDialogWord(row.active ? 'Deactivate' : 'Reactivate');
-                setDialogWordLower(row.active ? 'deactivate' : 'reactivate');
-                setDialogColor(row.active ? '#c96363' : '#50d2be');
-                setSelectedActivationID(row.adminId);
-                setSelectedActivationStatus(row.active);
+                setDialogTitle(adminDialog[row.active].noun)
+                setDialogWord(adminDialog[row.active].verb)
+                setDialogWordLower(adminDialog[row.active].verbLower)
+                setDialogColor(adminDialog[row.active].color)
+                setSelectedActivationID(row.adminId)
+                setSelectedActivationStatus(row.active)
               }}
             >
-              {row.active ? 'Deactivate' : 'Reactivate'}
+              {adminDialog[row.active].verb}
             </Typography>
           );
       }
@@ -331,7 +359,7 @@ function AdminTable({ admins = [] }) {
               size='large'
               style={{ backgroundColor: dialogColor, borderColor: dialogColor, opacity: 1 }}
               variant='contained'
-              onClick={handleClose}
+              onClick={handleSubmitActivation}
             >
               Yes, {dialogWord}
             </Button>
