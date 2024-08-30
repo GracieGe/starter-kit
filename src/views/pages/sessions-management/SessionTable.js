@@ -35,9 +35,12 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 function SessionTable({ sessions = [] }) {
+  // sort sessions
+  const sortedSessions = [...sessions].sort((a, b) => a.sessionId - b.sessionId)
+
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
   const [searchText, setSearchText] = useState('');
-  const [filteredData, setFilteredData] = useState(sessions);
+  const [filteredData, setFilteredData] = useState(sortedSessions);
 
   const handleSearch = searchValue => {
     setSearchText(searchValue);
@@ -45,13 +48,15 @@ function SessionTable({ sessions = [] }) {
 
     const filteredRows = sessions.filter(row => {
       return Object.keys(row).some(field => {
-        return searchRegex.test(row[field].toString());
+        const value = row[field];
+        
+        return value !== null && value !== undefined && searchRegex.test(value.toString());
       });
     });
     if (searchValue.length) {
-      setFilteredData(filteredRows);
+      setFilteredData([...filteredRows].sort((a, b) => a.sessionId - b.sessionId))
     } else {
-      setFilteredData(sessions);
+      setFilteredData([...sortedSessions])
     }
   };
 
@@ -70,12 +75,12 @@ function SessionTable({ sessions = [] }) {
     {
       flex: 0.1,
       minWidth: 50,
-      field: 'fullName_t',
+      field: 'studentName',
       headerName: 'Student',
       renderCell: ({ row }) => (
-        <Tooltip title={row.fullName_t}>
+        <Tooltip title={row.studentName}>
           <Typography variant='body1' noWrap>
-            {row.fullName_t}
+            {row.studentName}
           </Typography>
         </Tooltip>
       )
@@ -83,12 +88,12 @@ function SessionTable({ sessions = [] }) {
     {
       flex: 0.1,
       minWidth: 50,
-      field: 'fullName_s',
+      field: 'teacherName',
       headerName: 'Teacher',
       renderCell: ({ row }) => (
-        <Tooltip title={row.fullName_s}>
+        <Tooltip title={row.teacherName}>
           <Typography variant='body1' noWrap>
-            {row.fullName_s}
+            {row.teacherName}
           </Typography>
         </Tooltip>
       )
@@ -121,13 +126,13 @@ function SessionTable({ sessions = [] }) {
     },
     {
       flex: 0.1,
-      field: 'time',
+      field: 'sessionTime',
       minWidth: 150,
       headerName: 'Time',
       renderCell: ({ row }) => (
-        <Tooltip title={row.time}>
+        <Tooltip title={row.sessionTime}>
           <Typography variant='body1' noWrap>
-            {row.time}
+            {row.sessionTime}
           </Typography>
         </Tooltip>
       )
@@ -137,26 +142,34 @@ function SessionTable({ sessions = [] }) {
       field: 'recording_student',
       minWidth: 100,
       headerName: 'Student Recording',
-      renderCell: ({ row }) => (
-        <Tooltip title={row.recording_student}>
-          <Typography variant='body1' noWrap>
-            {row.recording_student}
-          </Typography>
-        </Tooltip>
-      )
+      renderCell: ({ row }) => {
+        const recording = row.recording_student ?? 'N/A'
+
+        return (
+          <Tooltip title={recording}>
+            <Typography variant='body1' noWrap>
+              {recording}
+            </Typography>
+          </Tooltip>
+        );
+      }
     },
     {
       flex: 0.1,
       field: 'recording_teacher',
       minWidth: 100,
       headerName: 'Teacher Recording',
-      renderCell: ({ row }) => (
-        <Tooltip title={row.recording_teacher}>
-          <Typography variant='body1' noWrap>
-            {row.recording_teacher}
-          </Typography>
-        </Tooltip>
-      )
+      renderCell: ({ row }) => {
+        const recording = row.recording_teacher ?? 'N/A'
+
+        return (
+          <Tooltip title={recording}>
+            <Typography variant='body1' noWrap>
+              {recording}
+            </Typography>
+          </Tooltip>
+        );
+      }
     },
     {
       flex: 0.1,
