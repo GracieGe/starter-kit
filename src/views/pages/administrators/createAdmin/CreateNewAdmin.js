@@ -19,6 +19,7 @@ import InputAdornment from '@mui/material/InputAdornment'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import OutlinedInput from '@mui/material/OutlinedInput'
+import MenuItem from '@mui/material/MenuItem';
 
 // ** Third Party Imports
 import { useForm, Controller } from 'react-hook-form'
@@ -240,12 +241,16 @@ const CreateAdminForm = () => {
                       }}
                       render={({ field: { value, onChange } }) => (
                         <TextField
+                          select
                           label='Role'
                           value={value || ''}
                           onChange={onChange}
                           error={Boolean(errors.role)}
                           aria-describedby='errorRole'
-                        />
+                        >
+                          <MenuItem value='Standard Admin'>Standard Admin</MenuItem>
+                          <MenuItem value='Super Admin'>Super Admin</MenuItem>
+                        </TextField>
                       )}
                     />
                     {errors.role && (
