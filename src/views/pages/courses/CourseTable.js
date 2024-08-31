@@ -151,7 +151,7 @@ function CourseTable({ courses = [] }) {
       headerName: 'Action',
       renderCell: ({ row }) => (
         <Tooltip title="Edit">
-        <Link href="#">
+        <Link href={`/update-information/courses/edit/${row.courseId}`}>
           <IconButton>
             <EditIcon />
           </IconButton>
