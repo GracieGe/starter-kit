@@ -1,28 +1,109 @@
 // ** MUI Imports
-import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
-import CardHeader from '@mui/material/CardHeader'
-import CardContent from '@mui/material/CardContent'
 
-const StatisticsInformation = () => {
+// ** Icon Imports
+import Icon from 'src/@core/components/icon'
+
+// ** Custom Components Imports
+import CardStatisticsCharacter from 'src/@core/components/card-statistics/card-stats-with-image'
+import CardStatisticsVerticalComponent from 'src/@core/components/card-statistics/card-stats-vertical'
+
+// ** Styled Component Import
+import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
+
+// ** Demo Components Imports
+import CrmTotalSales from 'src/views/pages/statistics-information/CrmTotalSales'
+import CrmWeeklySales from 'src/views/pages/statistics-information/CrmWeeklySales'
+import CrmTotalGrowth from 'src/views/pages/statistics-information/CrmTotalGrowth'
+import CrmUpgradePlan from 'src/views/pages/statistics-information/CrmUpgradePlan'
+import CrmTransactions from 'src/views/pages/statistics-information/CrmTransactions'
+import CrmRevenueReport from 'src/views/pages/statistics-information/CrmRevenueReport'
+import CrmSalesOverview from 'src/views/pages/statistics-information/CrmSalesOverview'
+import CrmMeetingSchedule from 'src/views/pages/statistics-information/CrmMeetingSchedule'
+import CrmDeveloperMeetup from 'src/views/pages/statistics-information/CrmDeveloperMeetup'
+import CrmActivityTimeline from 'src/views/pages/statistics-information/CrmActivityTimeline'
+
+const data = [
+  {
+    stats: '13.7k',
+    title: 'Ratings',
+    trendNumber: '+38%',
+    chipColor: 'primary',
+    chipText: 'Year of 2022',
+    src: '/images/cards/pose_f9.png'
+  },
+  {
+    stats: '24.5k',
+    trend: 'negative',
+    title: 'Sessions',
+    trendNumber: '-22%',
+    chipText: 'Last Week',
+    chipColor: 'secondary',
+    src: '/images/cards/pose_m18.png'
+  }
+]
+
+const CRMDashboard = () => {
   return (
-    <Grid container spacing={6}>
-      <Grid item xs={12}>
-        <Card>
-          <CardHeader title='Create Awesome 🙌'></CardHeader>
-          <CardContent>
-            <Typography sx={{ mb: 2 }}>This is your statistics information page.</Typography>
-            <Typography>
-              Chocolate sesame snaps pie carrot cake pastry pie lollipop muffin.
-              Carrot cake dragée chupa chups jujubes. Macaroon liquorice cookie
-              wafer tart marzipan bonbon. Gingerbread jelly-o dragée chocolate.
-            </Typography>
-          </CardContent>
-        </Card>
+    <ApexChartWrapper>
+      <Grid container spacing={6}>
+        <Grid item xs={12} sm={6} md={3} sx={{ pt: theme => `${theme.spacing(12.25)} !important` }}>
+          <CardStatisticsCharacter data={data[0]} />
+        </Grid>
+        <Grid item xs={12} sm={6} md={3} sx={{ pt: theme => `${theme.spacing(12.25)} !important` }}>
+          <CardStatisticsCharacter data={data[1]} />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <CrmTransactions />
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <CrmTotalSales />
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <CrmRevenueReport />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <CrmSalesOverview />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <CrmActivityTimeline />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Grid container spacing={6}>
+            <Grid item xs={12} sm={8}>
+              <CrmWeeklySales />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Grid container spacing={6}>
+                <Grid item xs={6} sm={12}>
+                  <CrmTotalGrowth />
+                </Grid>
+                <Grid item xs={6} sm={12}>
+                  <CardStatisticsVerticalComponent
+                    stats='862'
+                    trend='negative'
+                    trendNumber='-18%'
+                    title='New Project'
+                    subtitle='Yearly Project'
+                    icon={<Icon icon='mdi:briefcase-variant-outline' />}
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} md={6} lg={4}>
+          <CrmUpgradePlan />
+        </Grid>
+        <Grid item xs={12} md={6} lg={4}>
+          <CrmMeetingSchedule />
+        </Grid>
+        <Grid item xs={12} md={6} lg={4}>
+          <CrmDeveloperMeetup />
+        </Grid>
       </Grid>
-    </Grid>
+    </ApexChartWrapper>
   )
 }
 
-export default StatisticsInformation
+export default CRMDashboard
