@@ -21,6 +21,12 @@ import { DataGrid } from '@mui/x-data-grid';
 // ** Custom Components Imports
 import QuickSearchToolbar from 'src/views/pages/administrators/QuickSearchToolbar';
 
+// ** Vars
+const teacherDialog = {
+  true: { letter: 'Y', verb: 'Deactivate', noun: 'Deactivation', verbLower: 'deactivate', color: '#c96363' },
+  false: { letter: 'N', verb: 'Reactivate', noun: 'Reactivation', verbLower: 'reactivate', color: '#50d2be' }
+};
+
 // ** Utils Import
 const escapeRegExp = value => {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
@@ -89,6 +95,34 @@ function TeacherTable({ teachers = [] }) {
 
   const handleCloseRemove = () => {
     setOpenRemove(false);
+  };
+
+  const handleSubmitActivation = async () => {
+    const id = selectedActivationID;
+    const newStatus = !selectedActivationStatus;
+
+    try {
+      const body = { teacherId: id, newStatus };
+      
+      const response = await fetch('/api/teacherActivation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      if (response.ok) {
+        setFilteredData(
+          filteredData.map(teacher =>
+            teacher.teacherId === id ? { ...teacher, active: newStatus } : teacher
+          )
+        );
+        handleClose();
+      } else {
+        console.error('Failed to update teacher status');
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const columns = [
@@ -188,7 +222,7 @@ function TeacherTable({ teachers = [] }) {
       headerName: 'Active',
       renderCell: ({ row }) => (
         <Typography variant='body1' noWrap>
-          {row.active ? 'Y' : 'N'}
+          {teacherDialog[row.active].letter}
         </Typography>
       )
     },
@@ -208,15 +242,15 @@ function TeacherTable({ teachers = [] }) {
               onClick={e => {
                 e.preventDefault();
                 handleClickOpen();
-                setDialogTitle(row.active ? 'Deactivation' : 'Reactivation');
-                setDialogWord(row.active ? 'Deactivate' : 'Reactivate');
-                setDialogWordLower(row.active ? 'deactivate' : 'reactivate');
-                setDialogColor(row.active ? '#c96363' : '#50d2be');
+                setDialogTitle(teacherDialog[row.active].noun);
+                setDialogWord(teacherDialog[row.active].verb);
+                setDialogWordLower(teacherDialog[row.active].verbLower);
+                setDialogColor(teacherDialog[row.active].color);
                 setSelectedActivationID(row.teacherId);
                 setSelectedActivationStatus(row.active);
               }}
             >
-              {row.active ? 'Deactivate' : 'Reactivate'}
+              {teacherDialog[row.active].verb}
             </Typography>
           );
       }
@@ -305,7 +339,7 @@ function TeacherTable({ teachers = [] }) {
               size='large'
               style={{ backgroundColor: dialogColor, borderColor: dialogColor, opacity: 1 }}
               variant='contained'
-              onClick={handleClose}
+              onClick={handleSubmitActivation}
             >
               Yes, {dialogWord}
             </Button>
