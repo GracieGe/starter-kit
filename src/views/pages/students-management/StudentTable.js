@@ -21,6 +21,12 @@ import { DataGrid } from '@mui/x-data-grid';
 // ** Custom Components Imports
 import QuickSearchToolbar from 'src/views/pages/administrators/QuickSearchToolbar';
 
+// ** Vars
+const studentDialog = {
+  true: { letter: 'Y', verb: 'Deactivate', noun: 'Deactivation', verbLower: 'deactivate', color: '#c96363' },
+  false: { letter: 'N', verb: 'Reactivate', noun: 'Reactivation', verbLower: 'reactivate', color: '#50d2be' }
+};
+
 // ** Utils Import
 const escapeRegExp = value => {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
@@ -89,6 +95,34 @@ function StudentTable({ students = [] }) {
 
   const handleCloseRemove = () => {
     setOpenRemove(false);
+  };
+
+  const handleSubmitActivation = async () => {
+    const id = selectedActivationID;
+    const newStatus = !selectedActivationStatus;
+
+    try {
+      const body = { studentId: id, newStatus };
+      
+      const response = await fetch('/api/studentActivation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      if (response.ok) {
+        setFilteredData(
+          filteredData.map(student =>
+            student.studentId === id ? { ...student, active: newStatus } : student
+          )
+        );
+        handleClose();
+      } else {
+        console.error('Failed to update student status');
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const columns = [
@@ -162,7 +196,7 @@ function StudentTable({ students = [] }) {
       headerName: 'Active',
       renderCell: ({ row }) => (
         <Typography variant='body1' noWrap>
-          {row.active ? 'Y' : 'N'}
+          {studentDialog[row.active].letter}
         </Typography>
       )
     },
@@ -182,15 +216,15 @@ function StudentTable({ students = [] }) {
               onClick={e => {
                 e.preventDefault();
                 handleClickOpen();
-                setDialogTitle(row.active ? 'Deactivation' : 'Reactivation');
-                setDialogWord(row.active ? 'Deactivate' : 'Reactivate');
-                setDialogWordLower(row.active ? 'deactivate' : 'reactivate');
-                setDialogColor(row.active ? '#c96363' : '#50d2be');
+                setDialogTitle(studentDialog[row.active].noun);
+                setDialogWord(studentDialog[row.active].verb);
+                setDialogWordLower(studentDialog[row.active].verbLower);
+                setDialogColor(studentDialog[row.active].color);
                 setSelectedActivationID(row.studentId);
                 setSelectedActivationStatus(row.active);
               }}
             >
-              {row.active ? 'Deactivate' : 'Reactivate'}
+              {studentDialog[row.active].verb}
             </Typography>
           );
       }
@@ -279,7 +313,7 @@ function StudentTable({ students = [] }) {
               size='large'
               style={{ backgroundColor: dialogColor, borderColor: dialogColor, opacity: 1 }}
               variant='contained'
-              onClick={handleClose}
+              onClick={handleSubmitActivation}
             >
               Yes, {dialogWord}
             </Button>
