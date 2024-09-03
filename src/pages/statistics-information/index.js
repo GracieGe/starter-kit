@@ -5,11 +5,12 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 
 const CRMDashboard = () => {
   const [data, setData] = useState([
-    { stats: 'Loading...', title: 'Registered Students', src: '/images/cards/pose_f9.png' },
-    { stats: 'Loading...', title: 'Registered Teachers', src: '/images/cards/pose_m18.png' },
-    { stats: 'Loading...', title: 'Paid Students', src: '/images/cards/pose_m1.png' },
-    { stats: 'Loading...', title: 'Signed Teachers', src: '/images/cards/pose_m35.png' },
-    { stats: 'Loading...', title: 'Sessions Amount', src: '/images/cards/graph-bar.png' }
+    { stats: 'Loading...', title: 'Registered students', src: '/images/cards/pose_f9.png' },
+    { stats: 'Loading...', title: 'Registered teachers', src: '/images/cards/pose_m18.png' },
+    { stats: 'Loading...', title: 'Paid students', src: '/images/cards/pose_m1.png' },
+    { stats: 'Loading...', title: 'Signed teachers', src: '/images/cards/pose_m35.png' },
+    { stats: 'Loading...', title: 'Sessions amount', src: '/images/cards/graph-bar.png' },
+    { stats: 'Loading...', title: 'Total volume of fund', src: '/images/cards/graph-bar.png' },
   ])
 
   useEffect(() => {
@@ -20,11 +21,16 @@ const CRMDashboard = () => {
 
         if (response.ok) {
           setData([
-            { stats: result.studentsCount, title: 'Registered Students', src: '/images/cards/pose_f9.png' },
-            { stats: result.teachersCount, title: 'Registered Teachers', src: '/images/cards/pose_m18.png' },
-            { stats: result.uniqueUsersCount, title: 'Paid Students', src: '/images/cards/pose_m1.png' },
-            { stats: result.signedTeachersCount, title: 'Signed Teachers', src: '/images/cards/pose_m35.png' },
-            { stats: result.sessionsCount, title: 'Sessions Amount', src: '/images/cards/graph-bar.png' }
+            { stats: result.studentsCount, title: 'Registered students', src: '/images/cards/pose_f9.png' },
+            { stats: result.teachersCount, title: 'Registered teachers', src: '/images/cards/pose_m18.png' },
+            { stats: result.uniqueUsersCount, title: 'Paid students', src: '/images/cards/pose_m1.png' },
+            { stats: result.signedTeachersCount, title: 'Signed teachers', src: '/images/cards/pose_m35.png' },
+            { stats: result.sessionsCount, title: 'Sessions amount', src: '/images/cards/graph-bar.png' },
+            { 
+              stats: new Intl.NumberFormat('zh-CN', { style: 'currency', currency: 'CNY', minimumFractionDigits: 0, maximumFractionDigits: 0, }).format(result.totalVolume), 
+              title: 'Total volume of fund', 
+              src: '/images/cards/graph-bar.png' 
+            },
           ]);
         } else {
           console.error('Failed to fetch statistics:', result.error);
@@ -54,6 +60,9 @@ const CRMDashboard = () => {
         </Grid>
         <Grid item xs={12} sm={6} md={3} sx={{ pt: theme => `${theme.spacing(12.25)} !important` }}>
           <CardStatisticsCharacter data={data[4]} /> 
+        </Grid>
+        <Grid item xs={12} sm={6} md={3} sx={{ pt: theme => `${theme.spacing(12.25)} !important` }}>
+          <CardStatisticsCharacter data={data[5]} /> 
         </Grid>
       </Grid>
     </ApexChartWrapper>

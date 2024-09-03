@@ -8,13 +8,15 @@ export default async function handler(req, res) {
       const uniqueUsersQuery = 'SELECT COUNT(DISTINCT "userId") FROM "Orders"'
       const signedTeachersQuery = 'SELECT COUNT("teacherId") FROM "Teachers" WHERE "status" = \'Signed\''
       const sessionsQuery = 'SELECT COUNT("sessionId") FROM "Sessions"'
+      const totalVolumeQuery = 'SELECT SUM("amount") as "totalVolume" FROM "Orders"'
 
-      const [studentsResult, teachersResult, uniqueUsersResult, signedTeachersResult, sessionsResult] = await Promise.all([
+      const [studentsResult, teachersResult, uniqueUsersResult, signedTeachersResult, sessionsResult, totalVolumeResult] = await Promise.all([
         pool.query(studentsQuery),
         pool.query(teachersQuery),
         pool.query(uniqueUsersQuery),
         pool.query(signedTeachersQuery),
-        pool.query(sessionsQuery) 
+        pool.query(sessionsQuery) ,
+        pool.query(totalVolumeQuery)
       ])
 
       const studentsCount = studentsResult.rows[0].count
@@ -22,13 +24,15 @@ export default async function handler(req, res) {
       const uniqueUsersCount = uniqueUsersResult.rows[0].count
       const signedTeachersCount = signedTeachersResult.rows[0].count
       const sessionsCount = sessionsResult.rows[0].count 
+      const totalVolume = totalVolumeResult.rows[0].totalVolume || 0
 
       res.status(200).json({
         studentsCount,
         teachersCount,
         uniqueUsersCount,
         signedTeachersCount,
-        sessionsCount
+        sessionsCount,
+        totalVolume
       })
     } catch (error) {
       console.error('Error fetching statistics:', error)

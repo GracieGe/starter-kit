@@ -19,7 +19,7 @@ const Img = styled('img')({
 const CardStatsCharacter = ({ data }) => {
   // ** Vars
   const { title, chipText, src, stats, trendNumber, trend = 'positive', chipColor = 'primary' } = data
-  const imageSx = title === 'Sessions Amount' ? { height: '100px', width: '100px' } : {}
+  const imageSx = title === 'Sessions amount' || title === 'Total volume of fund'? { height: '100px', width: '100px' } : {}
 
   return (
     <Card sx={{ overflow: 'visible', position: 'relative' }}>
