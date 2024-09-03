@@ -28,20 +28,15 @@ const CardStatsCharacter = ({ data }) => {
           <Typography variant='h5' sx={{ mr: 1.5 }}>
             {stats}
           </Typography>
-          <Typography
-            component='sup'
-            variant='caption'
-            sx={{ color: trend === 'negative' ? 'error.main' : 'success.main' }}
-          >
-            {trendNumber}
-          </Typography>
         </Box>
         <CustomChip
-          size='small'
-          skin='light'
-          label={chipText}
-          color={chipColor}
-          sx={{ height: 20, fontWeight: 500, fontSize: '0.75rem', '& .MuiChip-label': { lineHeight: '1.25rem' } }}
+          sx={{ 
+            height: 20, 
+            fontWeight: 500, 
+            fontSize: '0.75rem', 
+            visibility: 'hidden',
+            '& .MuiChip-label': { lineHeight: '1.25rem' } 
+          }}
         />
         <Img src={src} alt={title} />
       </CardContent>
