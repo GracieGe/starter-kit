@@ -19,6 +19,7 @@ const Img = styled('img')({
 const CardStatsCharacter = ({ data }) => {
   // ** Vars
   const { title, chipText, src, stats, trendNumber, trend = 'positive', chipColor = 'primary' } = data
+  const imageSx = title === 'Sessions Amount' ? { height: '100px', width: '100px' } : {}
 
   return (
     <Card sx={{ overflow: 'visible', position: 'relative' }}>
@@ -38,7 +39,7 @@ const CardStatsCharacter = ({ data }) => {
             '& .MuiChip-label': { lineHeight: '1.25rem' } 
           }}
         />
-        <Img src={src} alt={title} />
+        <Img src={src} alt={title} style={imageSx}/>
       </CardContent>
     </Card>
   )
