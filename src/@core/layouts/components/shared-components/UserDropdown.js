@@ -18,7 +18,7 @@ import Typography from '@mui/material/Typography'
 import Icon from 'src/@core/components/icon'
 
 // ** Context
-import { useAuth } from 'src/hooks/useAuth'
+// import { useAuth } from 'src/hooks/useAuth'
 
 // ** Styled Components
 const BadgeContentSpan = styled('span')(({ theme }) => ({
@@ -38,7 +38,6 @@ const UserDropdown = props => {
 
   // ** Hooks
   const router = useRouter()
-  const { logout } = useAuth()
 
   // ** Vars
   const { direction } = settings
@@ -54,6 +53,11 @@ const UserDropdown = props => {
     setAnchorEl(null)
   }
 
+  const handleLogout = () => {
+    router.push('/login')
+    handleDropdownClose()
+  }
+
   const styles = {
     py: 2,
     px: 4,
@@ -67,11 +71,6 @@ const UserDropdown = props => {
       fontSize: '1.375rem',
       color: 'text.primary'
     }
-  }
-
-  const handleLogout = () => {
-    logout()
-    handleDropdownClose()
   }
 
   return (

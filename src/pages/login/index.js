@@ -32,12 +32,8 @@ import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 // ** Hooks
-import { useAuth } from 'src/hooks/useAuth'
 import useBgColor from 'src/@core/hooks/useBgColor'
 import { useSettings } from 'src/@core/hooks/useSettings'
-
-// ** Configs
-import themeConfig from 'src/configs/themeConfig'
 
 // ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout'
@@ -97,13 +93,13 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  email: yup.string().email().required(),
+  phoneNumber: yup.string().required('Phone number is required').matches(/^[0-9]+$/, "Must be only digits").min(10, 'Phone number must be at least 10 digits').max(15, 'Phone number must be at most 15 digits'),
   password: yup.string().min(5).required()
 })
 
 const defaultValues = {
-  password: 'admin',
-  email: 'admin@materio.com'
+  password: '',
+  phoneNumber: ''
 }
 
 const LoginPage = () => {
@@ -111,7 +107,6 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false)
 
   // ** Hooks
-  const auth = useAuth()
   const theme = useTheme()
   const bgColors = useBgColor()
   const { settings } = useSettings()
@@ -132,18 +127,38 @@ const LoginPage = () => {
     resolver: yupResolver(schema)
   })
 
-  const onSubmit = data => {
-    const { email, password } = data
-    auth.login({ email, password, rememberMe }, () => {
-      setError('email', {
+  const onSubmit = async data => {
+    const { phoneNumber, password } = data;
+    
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ phoneNumber, password })
+      });
+  
+      const result = await response.json();
+  
+      if (response.ok) {
+        console.log("Login successful", result.user);
+        router.push('/statistics-information');
+      } else {
+        setError('phoneNumber', {
+          type: 'manual',
+          message: result.error
+        });
+      }
+    } catch (error) {
+      console.error('An error occurred during login:', error);
+      setError('phoneNumber', {
         type: 'manual',
-        message: 'Email or Password is invalid'
-      })
-    }, () => {
-      console.log("Login successful, redirecting to /statistics-information")
-      router.push('/statistics-information') 
-    })
+        message: 'Something went wrong. Please try again later.'
+      });
+    }
   }
+
   const imageSource = skin === 'bordered' ? 'auth-v2-login-illustration-bordered' : 'auth-v2-login-illustration'
 
   return (
@@ -260,22 +275,22 @@ const LoginPage = () => {
             <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
               <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller
-                  name='email'
+                  name='phoneNumber'
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { value, onChange, onBlur } }) => (
                     <TextField
                       autoFocus
-                      label='Email'
+                      label='Phone Number'
                       value={value}
                       onBlur={onBlur}
                       onChange={onChange}
-                      error={Boolean(errors.email)}
-                      placeholder='admin@materio.com'
+                      error={Boolean(errors.phoneNumber)}
+                      placeholder=''
                     />
                   )}
                 />
-                {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
+                {errors.phoneNumber && <FormHelperText sx={{ color: 'error.main' }}>{errors.phoneNumber.message}</FormHelperText>}
               </FormControl>
               <FormControl fullWidth>
                 <InputLabel htmlFor='auth-login-v2-password' error={Boolean(errors.password)}>
@@ -334,6 +349,5 @@ const LoginPage = () => {
   )
 }
 LoginPage.getLayout = page => <BlankLayout>{page}</BlankLayout>
-LoginPage.guestGuard = true
 
 export default LoginPage

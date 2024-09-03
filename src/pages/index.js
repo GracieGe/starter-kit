@@ -1,7 +1,7 @@
 export async function getServerSideProps() {
   return {
     redirect: {
-      destination: '/statistics-information',
+      destination: '/login',
       permanent: false
     }
   }
