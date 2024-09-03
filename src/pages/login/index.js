@@ -6,9 +6,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 // ** MUI Components
-import Alert from '@mui/material/Alert'
 import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
 import Checkbox from '@mui/material/Checkbox'
 import TextField from '@mui/material/TextField'
 import InputLabel from '@mui/material/InputLabel'
@@ -142,7 +140,7 @@ const LoginPage = () => {
       const result = await response.json();
   
       if (response.ok) {
-        console.log("Login successful", result.user);
+        localStorage.setItem('userRole', result.user.role);
         router.push('/statistics-information');
       } else {
         setError('phoneNumber', {

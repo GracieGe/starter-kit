@@ -1,5 +1,5 @@
-const navigation = () => {
-  return [
+const navigation = (role) => {
+  const baseNavigation = [
     {
       title: 'Statistics Information',
       path: '/statistics-information',
@@ -15,7 +15,10 @@ const navigation = () => {
     {
       title: 'Teachers Management',
       path: '/teachers-management',
-    },
+    }
+  ];
+
+  const superAdminNavigation = [
     {
       title: 'Administrators',
       path: '/administrators',
@@ -28,8 +31,14 @@ const navigation = () => {
           path: '/update-information/courses'
         },
       ]
-    },
-  ]
+    }
+  ];
+
+  if (role === 'Super Admin') {
+    return [...baseNavigation, ...superAdminNavigation];
+  }
+
+  return baseNavigation;
 }
 
-export default navigation
+export default navigation;
