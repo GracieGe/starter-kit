@@ -16,6 +16,10 @@ export default async function handler(req, res) {
 
       const user = result.rows[0];
 
+      if (!user.active) {
+        return res.status(403).json({ error: 'Account is deactivated. Please activate your account first.' });
+      }
+
       if (user.password !== password) {
         return res.status(401).json({ error: 'Invalid phone number or password' });
       }

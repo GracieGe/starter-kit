@@ -143,10 +143,17 @@ const LoginPage = () => {
         localStorage.setItem('userRole', result.user.role);
         router.push('/statistics-information');
       } else {
-        setError('phoneNumber', {
-          type: 'manual',
-          message: result.error
-        });
+        if (response.status === 403) {
+          setError('phoneNumber', {
+            type: 'manual',
+            message: 'Your account is deactivated. Please activate your account first.'
+          });
+        } else {
+          setError('phoneNumber', {
+            type: 'manual',
+            message: result.error
+          });
+        }
       }
     } catch (error) {
       console.error('An error occurred during login:', error);
