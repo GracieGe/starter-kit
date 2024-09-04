@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import useMediaQuery from '@mui/material/useMediaQuery'
 
 // ** Layout Imports
@@ -22,7 +23,14 @@ import { useSettings } from 'src/@core/hooks/useSettings'
 const UserLayout = ({ children, contentHeightFixed }) => {
   // ** Hooks
   const { settings, saveSettings } = useSettings()
-  const userRole = localStorage.getItem('userRole')
+  const [userRole, setUserRole] = useState(null)
+  
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedRole = localStorage.getItem('userRole')
+      setUserRole(storedRole)
+    }
+  }, [])
 
   // ** Vars for server side navigation
   // const { menuItems: verticalMenuItems } = ServerSideVerticalNavItems()

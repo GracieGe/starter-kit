@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CreateCourseForm from 'src/views/pages/courses/createCourse/CreateNewCourse'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
@@ -11,7 +12,23 @@ import IconButton from '@mui/material/IconButton'
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
 
-function createNewCourse() {
+function CreateNewCourse() {
+  const [role, setRole] = useState(null)
+  const router = useRouter()
+
+  useEffect(() => {
+    const storedRole = localStorage.getItem('userRole')
+    if (!storedRole) {
+      router.push('/login')
+    } else {
+      setRole(storedRole)
+    }
+  }, [router])
+
+  if (!role) {
+    return <p>Loading...</p>
+  }
+
   return (
     <>
       <Typography variant='p'>
@@ -27,4 +44,4 @@ function createNewCourse() {
   )
 }
 
-export default createNewCourse
+export default CreateNewCourse
