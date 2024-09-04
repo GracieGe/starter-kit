@@ -164,7 +164,7 @@ const LoginPage = () => {
     }
   }
 
-  const imageSource = skin === 'bordered' ? 'auth-v2-login-illustration-bordered' : 'auth-v2-login-illustration'
+  const imageSource = 'auth-v2-register-illustration'
 
   return (
     <Box className='content-right'>
