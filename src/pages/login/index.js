@@ -92,7 +92,9 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 
 const schema = yup.object().shape({
   phoneNumber: yup.string().required('Phone number is required').matches(/^[0-9]+$/, "Must be only digits").min(10, 'Phone number must be at least 10 digits').max(15, 'Phone number must be at most 15 digits'),
-  password: yup.string().min(5).required()
+  password: yup
+  .string()
+  .required('Password is required.')
 })
 
 const defaultValues = {
@@ -282,7 +284,7 @@ const LoginPage = () => {
                   label='Remember Me'
                   control={<Checkbox checked={rememberMe} onChange={e => setRememberMe(e.target.checked)} />}
                 />
-                <LinkStyled href='/forgot-password'>Forgot Password?</LinkStyled>
+                <LinkStyled href=''>Forgot Password?</LinkStyled>
               </Box>
               <Button fullWidth size='large' type='submit' variant='contained' sx={{ mb: 7 }}>
                 Login
