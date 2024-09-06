@@ -1,19 +1,19 @@
 const navigation = (role) => {
   const baseNavigation = [
     {
-      title: 'Statistics Information',
+      title: 'Statistics',
       path: '/statistics-information',
     },
     {
-      title: 'Sessions Management',
+      title: 'Sessions',
       path: '/sessions-management',
     },
     {
-      title: 'Students Management',
+      title: 'Students',
       path: '/students-management',
     },
     {
-      title: 'Teachers Management',
+      title: 'Teachers',
       path: '/teachers-management',
     }
   ];
@@ -27,7 +27,7 @@ const navigation = (role) => {
       title: 'Update Information',
       children: [
         {
-          title: 'Courses Information',
+          title: 'Courses',
           path: '/update-information/courses'
         },
       ]
