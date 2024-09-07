@@ -16,7 +16,7 @@ const CRMDashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/api/statistics');
+        const response = await fetch('/api/web-api/statistics');
         const result = await response.json();
 
         if (response.ok) {

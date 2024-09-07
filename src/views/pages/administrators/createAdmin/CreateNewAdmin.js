@@ -102,7 +102,7 @@ const CreateAdminForm = () => {
     try {
       const body = { phoneNumberNew, fullNameNew, emailNew, passwordNew, roleNew }
 
-      const response = await fetch('/api/createAdmin', {
+      const response = await fetch('/api/web-api/createAdmin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)

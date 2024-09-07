@@ -104,7 +104,7 @@ function TeacherTable({ teachers = [] }) {
     try {
       const body = { teacherId: id, newStatus };
       
-      const response = await fetch('/api/teacherActivation', {
+      const response = await fetch('/api/web-api/teacherActivation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

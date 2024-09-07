@@ -42,7 +42,7 @@ const CreateCourseForm = () => {
     try {
       const body = { courseNameNew, gradeNew, descriptionNew, priceNew }
 
-      const response = await fetch('/api/createCourse', {
+      const response = await fetch('/api/web-api/createCourse', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)

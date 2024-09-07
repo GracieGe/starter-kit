@@ -20,7 +20,7 @@ const EditCourseForm = ({ courseId }) => {
     if (courseId) {
       const fetchCourseData = async () => {
         try {
-          const response = await fetch(`/api/getCourse?courseId=${courseId}`);
+          const response = await fetch(`/api/web-api/getCourse?courseId=${courseId}`);
           const data = await response.json();
           
           setValue('courseName', data.courseName);
@@ -40,7 +40,7 @@ const EditCourseForm = ({ courseId }) => {
 
   const onSubmit = async (formData) => {
     try {
-      const response = await fetch(`/api/updateCourse`, {
+      const response = await fetch(`/api/web-api/updateCourse`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ courseId, ...formData })

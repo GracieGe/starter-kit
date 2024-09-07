@@ -105,7 +105,7 @@ function AdminTable({ admins = [] }) {
     try {
       const body = { id, newStatus };
   
-      const response = await fetch('/api/adminActivation', {
+      const response = await fetch('/api/web-api/adminActivation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
@@ -133,7 +133,7 @@ function AdminTable({ admins = [] }) {
     try {
       const body = { ids }
 
-      await fetch('/api/deleteAdmins', {
+      await fetch('/api/web-api/deleteAdmins', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)

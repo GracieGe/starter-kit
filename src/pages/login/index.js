@@ -131,7 +131,7 @@ const LoginPage = () => {
     const { phoneNumber, password } = data;
     
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch('/api/web-api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
