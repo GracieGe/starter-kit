@@ -166,7 +166,7 @@ const LoginPage = () => {
     }
   }
 
-  const imageSource = 'auth-v2-register-illustration'
+  const imageSource = 'books'
 
   return (
     <Box className='content-right'>
@@ -175,7 +175,7 @@ const LoginPage = () => {
           <LoginIllustrationWrapper>
             <LoginIllustration
               alt='login-illustration'
-              src={`/images/pages/${imageSource}-${theme.palette.mode}.png`}
+              src={`/images/pages/${imageSource}-${theme.palette.mode}.jpg`}
             />
           </LoginIllustrationWrapper>
           <FooterIllustrationsV2 />
